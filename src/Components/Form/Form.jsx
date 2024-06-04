@@ -21,7 +21,8 @@ const Form = () => {
     <div>
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-gray-300 py-2 px-5 w-full"
+        className="bg-white py-2 px-5 w-full rounded-md"
+        style={{ boxShadow: "2px 2px 22px 2px #8a8a8a" }}
       >
         <label htmlFor="item" className="text-2xl font-semibold">
           New Todo:{" "}
@@ -32,7 +33,7 @@ const Form = () => {
             id="item"
             onChange={handleChange}
             value={userText}
-            className="border-2 border-gray-200 rounded-md py-2 px-4 w-full"
+            className="border-2 border-gray-300 rounded-md py-2 px-4 w-full"
             autoComplete="off"
           />
           <button
