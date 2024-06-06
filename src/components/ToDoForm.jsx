@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ToDoList from "./ToDoList";
+import { v4 as uuidv4 } from "uuid";
 
 const ToDoForm = () => {
   const [value, setValue] = useState([]);
@@ -10,14 +11,22 @@ const ToDoForm = () => {
     setUserText(newValue);
   }
 
+  function handleDelete(id) {
+    setValue(value.filter((item) => item.id !== id));
+  }
+
+  function handleEdit(id) {
+    alert(`Edit item with id ${id}`);
+    // Your edit logic here
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
     if (userText.trim() !== "") {
-      setValue((preValue) => {
-        return [...preValue, userText];
-      });
+      const newItem = { id: uuidv4(), text: userText };
+      setValue((prevValue) => [...prevValue, newItem]);
+      setUserText(""); // Clear the input field after submission
     }
-    setUserText("");
   }
 
   return (
@@ -47,7 +56,11 @@ const ToDoForm = () => {
         </div>
       </form>
 
-      <ToDoList toDoItem={value} />
+      <ToDoList
+        toDoItem={value}
+        deleteList={handleDelete}
+        handleEdit={handleEdit}
+      />
     </>
   );
 };
