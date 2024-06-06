@@ -1,0 +1,16 @@
+#toDo-wrapper {
+    margin: 5rem 0;
+}
+
+
+@media (max-width: 1000px) {
+    #toDo-wrapper {
+        width: 70vw;
+    }
+}
+
+@media (max-width: 681px) {
+    #toDo-wrapper {
+        width: 95vw;
+    }
+}
