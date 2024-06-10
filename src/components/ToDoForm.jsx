@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 const ToDoForm = () => {
   const [value, setValue] = useState([]);
   const [userText, setUserText] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState(null);
 
   function handleChange(event) {
     const newValue = event.target.value;
@@ -16,15 +18,27 @@ const ToDoForm = () => {
   }
 
   function handleEdit(id) {
-    alert(`Edit item with id ${id}`);
-    // Your edit logic here
+    const editedItem = value.find((item) => item.id === id);
+    setUserText(editedItem.text);
+    setIsEditing(true);
+    setEditId(id);
   }
 
   function handleSubmit(event) {
     event.preventDefault();
     if (userText.trim() !== "") {
-      const newItem = { id: uuidv4(), text: userText };
-      setValue((prevValue) => [...prevValue, newItem]);
+      if (isEditing) {
+        setValue((prevValue) =>
+          prevValue.map((item) =>
+            item.id === editId ? { ...item, text: userText } : item
+          )
+        );
+        setIsEditing(false);
+        setEditId(null);
+      } else {
+        const newItem = { id: uuidv4(), text: userText };
+        setValue((prevValue) => [...prevValue, newItem]);
+      }
       setUserText(""); // Clear the input field after submission
     }
   }
@@ -33,11 +47,11 @@ const ToDoForm = () => {
     <>
       <form onSubmit={handleSubmit}>
         <div
-          id="inputField"
           className="flex items-center justify-center w-full border-2"
           style={{ border: "2px solid rgb(140, 78, 255)" }}
         >
           <input
+            id="inputField"
             type="text"
             autoComplete="off"
             required
@@ -51,7 +65,7 @@ const ToDoForm = () => {
             className="px-3 text-white font-medium"
             style={{ background: "rgb(140, 78, 255)" }}
           >
-            Add Task
+            {isEditing ? "Update Task" : "Add Task"}
           </button>
         </div>
       </form>
@@ -59,7 +73,7 @@ const ToDoForm = () => {
       <ToDoList
         toDoItem={value}
         deleteList={handleDelete}
-        handleEdit={handleEdit}
+        editList={handleEdit}
       />
     </>
   );
